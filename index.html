@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7efe3" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Мои финансы" />
+    <title>Мои финансы</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="icons/icon-180.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div class="brand-mark" aria-hidden="true">₽</div>
+        <div>
+          <p class="muted" id="todayLabel">Сегодня</p>
+          <h1>Мои финансы</h1>
+          <p class="hero-copy">Расходы, категории, статистика и вклад в одном мобильном кабинете.</p>
+        </div>
+        <button class="ghost-button" id="exportButton" type="button">Экспорт</button>
+      </header>
+
+      <main>
+        <section class="screen active" id="dashboardScreen">
+          <section class="budget-card">
+            <div>
+              <p class="eyebrow">Расходы в этом месяце</p>
+              <h2 id="monthTotal">0 сум</h2>
+              <p class="budget-line">из <strong id="budgetLimit">4 200 000 сум</strong> бюджета</p>
+            </div>
+            <div class="progress-ring" id="budgetRing" style="--value: 0">
+              <span id="budgetPercent">0%</span>
+              <small>бюджета</small>
+            </div>
+            <div class="budget-bar"><span id="budgetBar"></span></div>
+            <div class="quick-metrics">
+              <div><span>Доход</span><strong id="incomeTotal">0 сум</strong></div>
+              <div><span>Потрачено</span><strong id="spentTotal">0 сум</strong></div>
+              <div><span>Осталось</span><strong id="remainingTotal">0 сум</strong></div>
+            </div>
+          </section>
+
+          <form class="quick-add" id="expenseForm">
+            <div class="section-title">
+              <h2>Быстрая трата</h2>
+              <button class="text-button" id="clearExpensesButton" type="button">Очистить</button>
+            </div>
+            <input id="expenseTitle" type="text" placeholder="Название, например продукты" required />
+            <div class="form-grid">
+              <select id="expenseCategory"></select>
+              <input id="expenseAmount" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" required />
+              <input id="expenseDate" type="date" required />
+            </div>
+            <button class="primary-button" type="submit">Добавить расход</button>
+          </form>
+
+          <section class="content-block">
+            <div class="section-title">
+              <h2>Топ категории</h2>
+              <button class="text-button" type="button" data-screen-link="categoriesScreen">Все</button>
+            </div>
+            <div class="category-strip" id="topCategories"></div>
+          </section>
+
+          <section class="content-block">
+            <div class="section-title">
+              <h2>Последние операции</h2>
+              <button class="text-button" type="button" data-screen-link="expensesScreen">Все</button>
+            </div>
+            <div class="transaction-list" id="expenseList"></div>
+          </section>
+
+          <section class="glance-card">
+            <div>
+              <span>Средний день</span>
+              <strong id="dailyAverage">0 сум</strong>
+            </div>
+            <div>
+              <span>Категорий</span>
+              <strong id="categoryCount">0</strong>
+            </div>
+            <div>
+              <span>Дней осталось</span>
+              <strong id="daysLeft">0</strong>
+            </div>
+          </section>
+
+          <section class="deposit-preview">
+            <div class="section-title">
+              <h2>План вклада</h2>
+              <button class="text-button" type="button" data-screen-link="depositScreen">Детали</button>
+            </div>
+            <div class="deposit-preview-grid">
+              <div class="mini-fields">
+                <span>Сумма <strong id="previewPrincipal">10 000</strong></span>
+                <span>Ставка <strong id="previewRate">18%</strong></span>
+                <span>Капитализация <strong id="previewCompounding">Ежемесячно</strong></span>
+              </div>
+              <div class="projected">
+                <span>Прогноз</span>
+                <strong id="previewFinal">0 сум</strong>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="screen" id="expensesScreen">
+          <div class="page-head">
+            <button class="back-button" type="button" data-screen-link="dashboardScreen">Назад</button>
+            <h2>Все расходы</h2>
+          </div>
+          <div class="transaction-list full" id="allExpenseList"></div>
+        </section>
+
+        <section class="screen" id="statsScreen">
+          <div class="page-head">
+            <h2>Статистика</h2>
+            <input id="statsMonth" type="month" />
+          </div>
+          <section class="budget-card compact">
+            <p class="eyebrow">Итого за выбранный месяц</p>
+            <h2 id="statsTotal">0 сум</h2>
+          </section>
+          <div class="stats-list" id="statsList"></div>
+        </section>
+
+        <section class="screen" id="categoriesScreen">
+          <div class="page-head">
+            <button class="back-button" type="button" data-screen-link="dashboardScreen">Назад</button>
+            <h2>Категории</h2>
+          </div>
+          <form class="quick-add" id="categoryForm">
+            <input id="categoryName" type="text" placeholder="Новая категория" required />
+            <input id="categoryColor" type="color" value="#8a7a42" />
+            <button class="primary-button" type="submit">Добавить категорию</button>
+          </form>
+          <div class="transaction-list" id="categoryList"></div>
+        </section>
+
+        <section class="screen" id="depositScreen">
+          <div class="page-head">
+            <h2>Калькулятор вклада</h2>
+            <p>Сложные проценты, пополнения и подробный отчет по месяцам.</p>
+          </div>
+          <form class="quick-add deposit-form" id="depositForm">
+            <div class="form-grid">
+              <label>Сумма<input id="principal" type="number" min="0" step="0.01" inputmode="decimal" value="10000" /></label>
+              <label>Ставка, %<input id="annualRate" type="number" min="0" step="0.01" inputmode="decimal" value="18" /></label>
+              <label>Лет<input id="termYears" type="number" min="0" max="40" step="1" value="1" /></label>
+              <label>Месяцев<input id="termMonths" type="number" min="0" max="11" step="1" value="0" /></label>
+              <label>Капитализация<select id="compoundingMode"><option value="daily">Дневная</option><option value="monthly" selected>Ежемесячная</option></select></label>
+              <label>Пополнение<input id="contributionAmount" type="number" min="0" step="0.01" inputmode="decimal" value="500" /></label>
+              <label>Как часто<select id="contributionFrequency"><option value="none">Без пополнений</option><option value="daily">Ежедневно</option><option value="biweekly">Каждые 2 недели</option><option value="monthly" selected>Ежемесячно</option></select></label>
+            </div>
+            <button class="primary-button" type="submit">Рассчитать план</button>
+          </form>
+          <section class="deposit-report" id="depositReport"></section>
+        </section>
+      </main>
+
+      <nav class="tabbar" aria-label="Основная навигация">
+        <button class="tab active" type="button" data-screen="dashboardScreen"><span>Главная</span></button>
+        <button class="tab" type="button" data-screen="expensesScreen"><span>Расходы</span></button>
+        <button class="tab" type="button" data-screen="statsScreen"><span>Статистика</span></button>
+        <button class="tab" type="button" data-screen="depositScreen"><span>Вклад</span></button>
+      </nav>
+    </div>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
