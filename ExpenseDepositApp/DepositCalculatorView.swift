@@ -277,7 +277,7 @@ private struct ReportMetric: View {
         HStack(spacing: 12) {
             Image(systemName: systemImage)
                 .frame(width: 28, height: 28)
-                .foregroundStyle(.accentColor)
+                .foregroundStyle(Color.accentColor)
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.subheadline)
